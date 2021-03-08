@@ -1,11 +1,56 @@
-function computerPlay() {
-  let moves = ["rock", "paper", "scissors"];
-  let computerMove = Math.floor(Math.random()*3);
-  return moves[computerMove];
+
+const userButtons = document.querySelectorAll('.userField button');
+const computerButtons = document.querySelectorAll('.computerField button');
+const playAgain = document.querySelector('#reset');
+
+
+let userScore = document.querySelector('#userScore');
+let computerScore = document.querySelector('#computerScore');
+let comments = document.querySelector('#comments p');
+let computerScoreCounter = 0;
+let userScoreCounter = 0;
+let moves = ["rock", "paper", "scissors"];
+let winningScore = 5;
+
+
+userButtons.forEach((button) => {
+  button.addEventListener('click', () => {
+    let playerMove = button.id;
+    let computerMove = moves[randomNumber()];
+    let round = oneRoundResult(playerMove, computerMove);
+    comments.textContent = round;
+    roundScore(round);
+    let computerBTn = compBtn(computerMove);
+    button.classList.add(`${colorizeUser(round)}`);
+    computerButtons[computerBTn].classList.add(`${colorizeComputer(round)}`);
+  });
+});
+
+
+userButtons.forEach((button) => {
+  button.addEventListener('transitionend', removeTransition)
+});
+
+
+computerButtons.forEach((button) => {
+  button.addEventListener('transitionend', removeTransition)
+});
+
+
+playAgain.addEventListener('click', reset);
+
+
+// computer choice
+
+function randomNumber() {
+  let num = Math.floor(Math.random()*3);
+  return num;
 }
 
 
-function playRound(playerSelection, computerSelection){
+// one round 
+
+function oneRoundResult(playerSelection, computerSelection){
 
   let result;  
 
@@ -30,44 +75,103 @@ function playRound(playerSelection, computerSelection){
   else if(playerSelection == "scissors" && computerSelection == "paper"){
     result = "You win! Scissors beats paper";
   }
-
   return result;
 }
+ 
 
-
-function game(){
-
-  let userScore = 0;
-  let computerScore = 0;
-
-  for(let i = 0; i <= 5; i++){
-    let playerMove = window.prompt("RockPaperScissors").toLocaleLowerCase();
-    let computerMove = computerPlay();
-    let oneMoveResult = playRound(playerSelection=playerMove, computerSelection=computerMove);
-    if(oneMoveResult == "It's a tie!"){
-      continue;
-    }
-    else if(oneMoveResult[4]=="w"){
-      userScore += 1;
-    }
-    else if(oneMoveResult[4]=="l"){
-      computerScore += 1;
-		}
-	}
-  if(userScore > computerScore){
-    winner = "You win!";
-  } 
-  else if(userScore < computerScore) {
-    winner = "Computer win!"
-  } else {
-    winner = "Tie";
+function compBtn(result){
+  if(result === 'rock'){
+    return 0;
   }
-  console.log(`${winner} ${userScore}, ${computerScore}`);
+  else if(result === 'paper'){
+    return 1;
+  }
+  else if(result === 'scissors'){
+    return 2;
+  }
 }
 
-        
-game();       
-    
+
+function removeTransition() {
+  this.classList.remove('winner');
+  this.classList.remove('loser');
+  this.classList.remove('tie');
+}
+
+
+function colorizeUser(results){
+  if(results === "It's a tie!"){
+    return "tie";
+  }
+  else if(results[4] =="w"){
+    return "winner";
+  }
+  else if(results[4] =="l"){
+    return "loser";
+  }
+}
+
+
+function colorizeComputer(results){
+  if(results === "It's a tie!"){
+    return "tie";
+  }
+  else if(results[4] =="l"){
+    return "winner";
+  }
+  else if(results[4] =="w"){
+    return "loser";
+  }
+}
+
+
+function roundScore(results){
+
+  if(results[4] =="w"){
+    userScoreCounter += 1;
+    userScore.textContent = userScoreCounter;
+    if(userScoreCounter === winningScore){
+      playAgain.style.visibility = 'visible';
+      comments.textContent = "You won!"
+      userButtons.forEach((button) => {
+        button.disabled = true;
+      });
+    }
+  }
+  else if(results[4] =="l"){
+    computerScoreCounter += 1;
+    computerScore.textContent = computerScoreCounter;
+    if(computerScoreCounter === winningScore){
+      playAgain.style.visibility = 'visible';
+      comments.textContent = "You lost!"
+      userButtons.forEach((button) => {
+        button.disabled = true;
+      });
+    }
+  }
+ }
+
+
+function reset(){
+  computerScoreCounter = 0;
+  userScoreCounter = 0;
+  userScore.textContent = userScoreCounter;
+  computerScore.textContent = computerScoreCounter;
+  comments.textContent = "";
+  playAgain.style.visibility = 'hidden';
+  userButtons.forEach((button) => {
+    button.disabled = false;
+  });
+}
+
+
+
+
+
+
+
+
+
 
   
 

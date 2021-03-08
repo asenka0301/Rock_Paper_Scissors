@@ -3,9 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./reset.css">
+    <link rel="stylesheet" href="./style.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@500&display=swap" rel="stylesheet">
     <title>Rock Papre Scissors</title>
 </head>
 <body>
+   <div class="container">
+        <h1>Rock Paper Scissors</h1>
+        <div class="gamePlay">
+            <section class = 'user'>
+                <h2>You</h2>
+                <div class="userField">
+                    <button id="rock" class="btn"></button>
+                    <button id="paper" class="btn"></button>
+                    <button id="scissors" class="btn"></button>
+                </div>
+            </section>
+            <section class="score">
+                <h2>Score</h2>
+                <div class="results">
+                    <p><span id="userScore">0</span>-<span id="computerScore">0</span></p>
+                </div>
+            </section>
+            <section class = 'computer'>
+                <h2 >Computer</h2>
+                <div class="computerField">
+                    <button id="rock" class="btn"></button>
+                    <button id="paper" class="btn"></button>
+                    <button id="scissors" class="btn"></button>
+                </div>
+            </section>
+        </div>
+        <div id="comments">
+            <p></p>
+        </div>
+        <div class="playAgain">
+            <button id="reset" >PLAY AGAIN?</button>
+        </div>
+
+   </div>
     <script src="script.js"></script>
 </body>
 </html>
