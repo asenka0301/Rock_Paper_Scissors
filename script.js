@@ -9,47 +9,17 @@ let computerScore = document.querySelector('#computerScore');
 let comments = document.querySelector('#comments p');
 let computerScoreCounter = 0;
 let userScoreCounter = 0;
-let moves = ["rock", "paper", "scissors"];
 let winningScore = 5;
 
-
-userButtons.forEach((button) => {
-  button.addEventListener('click', () => {
-    let playerMove = button.id;
-    let computerMove = moves[randomNumber()];
-    let round = oneRoundResult(playerMove, computerMove);
-    comments.textContent = round;
-    roundScore(round);
-    let computerBTn = compBtn(computerMove);
-    button.classList.add(`${colorizeUser(round)}`);
-    computerButtons[computerBTn].classList.add(`${colorizeComputer(round)}`);
-  });
-});
-
-
-userButtons.forEach((button) => {
-  button.addEventListener('transitionend', removeTransition)
-});
-
-
-computerButtons.forEach((button) => {
-  button.addEventListener('transitionend', removeTransition)
-});
-
-
-playAgain.addEventListener('click', reset);
-
-
 // computer choice
-
-function randomNumber() {
+function getComputerMove() {
+  let moves = ["rock", "paper", "scissors"];
   let num = Math.floor(Math.random()*3);
-  return num;
+  
+  return moves[num];
 }
 
-
-// one round 
-
+// one round
 function oneRoundResult(playerSelection, computerSelection){
 
   let result;  
@@ -77,7 +47,34 @@ function oneRoundResult(playerSelection, computerSelection){
   }
   return result;
 }
- 
+
+
+function roundScore(results){
+
+  if(results[4] =="w"){
+    userScoreCounter += 1;
+    userScore.textContent = userScoreCounter;
+    if(userScoreCounter === winningScore){
+      playAgain.style.visibility = 'visible';
+      comments.textContent = "You won!"
+      userButtons.forEach((button) => {
+        button.disabled = true;
+      });
+    }
+  }
+  else if(results[4] =="l"){
+    computerScoreCounter += 1;
+    computerScore.textContent = computerScoreCounter;
+    if(computerScoreCounter === winningScore){
+      playAgain.style.visibility = 'visible';
+      comments.textContent = "You lost!"
+      userButtons.forEach((button) => {
+        button.disabled = true;
+      });
+    }
+  }
+}
+
 
 function compBtn(result){
   if(result === 'rock'){
@@ -89,13 +86,6 @@ function compBtn(result){
   else if(result === 'scissors'){
     return 2;
   }
-}
-
-
-function removeTransition() {
-  this.classList.remove('winner');
-  this.classList.remove('loser');
-  this.classList.remove('tie');
 }
 
 
@@ -125,31 +115,35 @@ function colorizeComputer(results){
 }
 
 
-function roundScore(results){
+userButtons.forEach((button) => {
+  button.addEventListener('click', () => {
+    let playerMove = button.id;
+    let computerMove = getComputerMove();
+    let round = oneRoundResult(playerMove, computerMove);
+    comments.textContent = round;
+    roundScore(round);
+    let computerBTn = compBtn(computerMove);
+    button.classList.add(`${colorizeUser(round)}`);
+    computerButtons[computerBTn].classList.add(`${colorizeComputer(round)}`);
+  });
+});
 
-  if(results[4] =="w"){
-    userScoreCounter += 1;
-    userScore.textContent = userScoreCounter;
-    if(userScoreCounter === winningScore){
-      playAgain.style.visibility = 'visible';
-      comments.textContent = "You won!"
-      userButtons.forEach((button) => {
-        button.disabled = true;
-      });
-    }
-  }
-  else if(results[4] =="l"){
-    computerScoreCounter += 1;
-    computerScore.textContent = computerScoreCounter;
-    if(computerScoreCounter === winningScore){
-      playAgain.style.visibility = 'visible';
-      comments.textContent = "You lost!"
-      userButtons.forEach((button) => {
-        button.disabled = true;
-      });
-    }
-  }
- }
+
+function removeTransition() {
+  this.classList.remove('winner');
+  this.classList.remove('loser');
+  this.classList.remove('tie');
+}
+
+
+userButtons.forEach((button) => {
+  button.addEventListener('transitionend', removeTransition)
+});
+
+
+computerButtons.forEach((button) => {
+  button.addEventListener('transitionend', removeTransition)
+});
 
 
 function reset(){
@@ -165,13 +159,4 @@ function reset(){
 }
 
 
-
-
-
-
-
-
-
-
-  
-
+playAgain.addEventListener('click', reset);
